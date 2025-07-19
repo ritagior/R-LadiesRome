@@ -1,0 +1,317 @@
+---
+title: "Visualising for patients" 
+#subtitle: "Create accessible charts"
+author:
+  - name: "Dr Rita Giordano"
+    affiliation:
+      - "Visual Data Studio / Clarum"
+date: last-modified
+date-format: "D MMMM YYYY"
+format:
+  revealjs:
+    theme: 
+      - default
+      - slides.scss
+    title-slide-attributes:
+      data-background-image: "img/background3.png"
+      data-background-size: cover
+      data-background-opacity: "50"
+    fontsize: 2em
+    html-math-method: mathjax
+    slide-number: c/t
+    show-slide-number: all
+    highlight-style: rstudio_default-light.theme
+    logo: "img/logo.png"
+    # footer: "[Slides are here](https://){target='_blank'}"  # complete the URL
+    include-after-body: "img/clean_title_page.html"
+    code-copy: true
+    #incremental: true
+    slide-level: 2
+    self-contained: true
+#include-in-header:
+#  text: |
+#    <link rel="shortcut icon" href="img/rmed.ico"/>
+embed-resources: true
+knitr:
+  opts_chunk:      ########## set global options ############
+    collapse: true # keep code from blocks together (if shown)
+    echo: false    # don't show code
+    message: true  # show messages
+    warning: true  # show warnings
+    error: true    # show error messages
+    comment: ""    # don't show ## with printed output
+    R.options:   
+      digits: 3    # round to three digits
+editor_options:
+  chunk_output_type: console
+editor: source
+highlight-style: rstudio_default-light.theme
+---
+
+# Introduction 
+
+```{r echo=FALSE}
+# Helper packages - need dplyr and ggplot
+library(conflicted)
+suppressPackageStartupMessages(library(tidymodels))
+tidymodels_prefer()
+ 
+suppressPackageStartupMessages(library(tidyverse))
+
+library(knitr)
+# library(kableExtra)
+```
+
+
+## A bit about myself {background-gradient="linear-gradient(to bottom,  #5F9FBC, #ffffff)"}
+
+## Good visualisation
+
+
+![](img/good_visualisation.png){width="80%" .center}
+
+
+## Patients Centric Design in data visualisation
+
+
+![](img/PCD_datavis2.png){width="90%"}{.center}
+
+::: {.notes}
+-   Patients are the end users of the data visualisation
+-   Visualisations should be designed with patients in mind
+-   Visualisations should be accessible to all patients, including those with visual impairments or cognitive disabilities
+-   Visualisations should be easy to understand and interpret
+-   Visualisations should be designed to help patients make informed decisions about their health
+:::
+
+## Patients Centric Design: data
+
+![](img/data.png){width="30%" .absolute bottom=0}
+
+## Patients Centric Design: story
+
+![](img/data_story.png){width="30%" .absolute bottom=0}
+
+## Patients Centric Design: goal
+
+![](img/data_story_goal.png){width="50%" .absolute bottom=0}
+
+## Introduction to patients'data
+
+::: {layout-ncol="3"}
+![](img/physapp.jpeg){width="50%"}
+
+![](img/pain_app.jpeg){width="50%"}
+
+![](img/calendar.jpeg){width="50%"}
+:::
+
+## Patient data: an example
+
+Pain location of a patient with arthritis
+
+:::: {layout-ncol="2"}
+![](img/bar_chart_patients.png){width="70%"}
+
+::: fragment
+![](img/zoom_bar_chart.png){fig-pos="t" width="80%"}
+:::
+::::
+
+## How patients can perceive colours?
+
+:::::: columns
+::: {.column width="50%"}
+Normal vision
+
+![](img/calendar_patients.png){width="120%"}
+:::
+
+:::: {.column width="50%"}
+::: fragment
+Protanopia (red colour blindness)
+
+![](img/red_protanopia.png){width="100%"}
+:::
+::::
+::::::
+
+## How patients can perceive colours?
+
+:::::: columns
+::: {.column width="50%"}
+Normal vision
+
+![](img/calendar_patients.png){width="120%"}
+:::
+
+:::: {.column width="50%"}
+::: fragment
+Deuteranopia (green colour blindness)
+
+![](img/green_deuteranopia.png){width="100%"}
+:::
+::::
+::::::
+
+## Autism-friendly palette
+
+Calming colours feeling of security: Pink and lilac
+
+```{r}
+#| message: false
+#| fig-width: 4
+#| fig-height: 1
+## brand colours
+
+library(colorblindr)
+brand <- c("#BFA6DE", "#E3A4D8")
+palette_plot(brand, xmargin = 0.12, ymargin = 0.10, label_size = 7, label_family = "roboto")
+```
+
+Blue and greens
+
+```{r}
+#| message: false
+#| fig-width: 4
+#| fig-height: 1
+## brand colours
+
+library(colorblindr)
+brand <- c("#9CB7C8", "#99B8A5")
+palette_plot(brand, xmargin = 0.12, ymargin = 0.10, label_size = 7, label_family = "roboto")
+```
+
+Neutral colours: Beige, greys, creams
+
+```{r}
+#| message: false
+#| #| fig-width: 4
+#| fig-height: 1
+## brand colours
+library(colorblindr)
+brand <- c("#EDEDE9", "#D6CCC2", "#F5EBE0", "#E3D5CA", "#D5BDAF")
+palette_plot(brand, xmargin = 0.12, ymargin = 0.10, label_size = 7, label_family = "roboto")
+```
+
+
+::: footer
+<span style="color: black;">Source: https://www.design-a11y.com/colors-autism</span>
+:::
+
+## High legibility fonts
+
+Example of Google Fonts that are easy to read: 
+
+-   <span style="font-family: roboto;">Roboto</span>
+
+-   Opens Sans
+
+-   Lato
+
+-   Montserrat
+
+-   <span style="font-family: Atkinson Hyperlegible">Atkinson Hyperlegible</span>
+
+-  <span style="font-family: lexend;">Lexend</span>
+
+
+
+# Colours accessibility
+
+## Color Brewer colour palette: colourblind friendly palette
+
+
+```{r}
+#| width: 100%
+
+library(RColorBrewer)
+display.brewer.all(colorblindFriendly = TRUE)
+```
+
+
+## Create a colourblind friendly palette
+
+```{r}
+#| message: false
+## brand colours
+library(colorblindr)
+brand <- c("red", "darkgreen", "blue", "purple")
+palette_plot(brand, xmargin = 0.2, ymargin = 0.8, label_size = 7, label_family = "roboto")
+```
+
+## Adjust the colours with saturaton and brightness
+
+
+```{r}
+library(recolorize)
+brand_rgb <- t(col2rgb(brand)/ 255 )
+brand_sat <- adjust_color(brand_rgb, which_colors = c(2, 3),
+                          saturation = 0.3, brightness = 0.9,
+                          plotting = TRUE)
+```
+
+
+## Adjust the colours with saturaton and brightness
+
+
+```{r}
+brand_hex <- rgb(brand_sat)
+cvd_grid(palette_plot(brand_hex,label_size = 4,
+                      xmargin = 0.2, ymargin = 0.8))
+```
+
+
+## Colour contrast
+
+Difference between colours, measured as the ratio of the relative luminance of the lighter colour to that of the darker colour.
+
+
+-   acceptable ratio $> 4.5$
+
+
+::: fragment
+How to check colour contrast?
+
+-   www.colourcontrast.cc
+
+-   
+:::
+
+## Colour contrast 
+
+
+```{r}
+library(coloratio)
+cr_get_ratio("lightgreen", "black",
+              view = TRUE)
+```
+
+
+## Colour contrast 
+
+
+```{r}
+bw <- cr_choose_bw("skyblue")
+```
+
+
+```{r}
+cr_get_ratio("darkblue", "black", view = TRUE)
+```
+
+
+## Further resources 
+
+- https://analysisfunction.civilservice.gov.uk/policy-store/data-visualisation-colours-in-charts/
+
+- https://cols4all.github.io/cols4all-R/index.html
+
+- https://cran.r-project.org/web/packages/recolorize/vignettes/Introduction.html
+
+
+# Thank you for your attention 
+
+::: footer
+<span style="color: black; font-size: 1.5em;">hello@ritagiordano.co.uk</span>
+:::
